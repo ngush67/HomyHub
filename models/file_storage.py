@@ -4,6 +4,7 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 
 class FileStorage:
     """Serializes instances to a JSON file and deserializes JSON file to instances."""
@@ -11,7 +12,14 @@ class FileStorage:
     __file_path = "file.json"  # Path to JSON file
     __objects = {}  # Dictionary storing objects in <class_name>.id format
 
-    def all(self):
+	def __ nit__(self):
+        """Initialize storage with available models"""
+        self.classes = {
+            "BaseModel": BaseModel,
+            "User": User
+        }
+
+	def all(self):
         """Returns the dictionary __objects."""
         return self.__objects
 
