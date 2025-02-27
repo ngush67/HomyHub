@@ -1,29 +1,38 @@
-#!/usr/bin/python3
 
 import uuid
 from datetime import datetime
 
 class BaseModel:
-    """Defines all common attributes/methods for other classes"""
+    """Base class for other models"""
 
-    def __init__(self):
-        """Initialize a new instance of BaseModel"""
-        self.id = str(uuid.uuid4())  # Unique ID for each instance
-        self.created_at = datetime.now()  # Timestamp when instance is created
-        self.updated_at = datetime.now()  # Timestamp for last update
-
-    def __str__(self):
-        """Return a string representation of the instance"""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
-
-    def save(self):
-        """Update the updated_at attribute with the current datetime"""
-        self.updated_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        """Initialize a new instance or recreate one from a dictionary"""
+        if kwargs:
+            # Recreate instance from a dictionary
+            for key, value in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    setattr(self, key, datetime.fromisoformat(value))
+                elif key != "__class__":  # Ignore the __class__ key
+                    setattr(self, key, value)
+        else:
+            # Create a new instance
+            self.id = str(uuid.uuid4())  # Generate unique ID
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def to_dict(self):
-        """Return a dictionary representation of the instance"""
-        dict_repr = self.__dict__.copy()
-        dict_repr["__class__"] = self.__class__.__name__
-        dict_repr["created_at"] = self.created_at.isoformat()
-        dict_repr["updated_at"] = self.updated_at.isoformat()
-        return dict_repr
+        """Convert instance attributes to a dictionary"""
+        instance_dict = self.__dict__.copy()
+        instance_dict["__class__"] = self.__class__.__name__
+        instance_dict["created_at"] = self.created_at.isoformat()
+        instance_dict["updated_at"] = self.updated_at.isoformat()
+        return instance_dict
+
+    def __str__(self):
+        """Return a string representation of the object"""
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+
+    def save(self):
+        """Update the updated_at attribute to current time"""
+        self.updated_at = datetime.now()
+
