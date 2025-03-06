@@ -1,4 +1,4 @@
-# HomyHub 🏡  
+# HomyHub 🏡   
 HomyHub is a property management system that allows users to list, browse, and review places. It features a command-line interface (CLI) for easy management and a structured data storage system.
 
 ## 📌 Features
