@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 
 """console module for HBNB command interpreter """
 
 import cmd
